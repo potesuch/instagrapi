@@ -41,6 +41,14 @@ MEDIA_TYPES_GQL = {"GraphImage": 1, "GraphVideo": 2, "GraphSidecar": 8, "StoryVi
 
 def extract_media_v1(data):
     """Extract media from Private API"""
+    if "clips_metadata" in data:
+        cai = data["clips_metadata"].get("content_appreciation_info")
+        if cai is None: #
+            data["clips_metadata"]["content_appreciation_info"] = {}
+        original_sound_info = data["clips_metadata"].get("original_sound_info")
+        if original_sound_info is None: #
+            data["clips_metadata"]["original_sound_info"] = {}
+
     media = deepcopy(data)
     if "video_versions" in media:
         # Select Best Quality by Resolutiuon

@@ -41,13 +41,47 @@ MEDIA_TYPES_GQL = {"GraphImage": 1, "GraphVideo": 2, "GraphSidecar": 8, "StoryVi
 
 def extract_media_v1(data):
     """Extract media from Private API"""
-    if "clips_metadata" in data:
-        cai = data["clips_metadata"].get("content_appreciation_info")
-        if cai is None: #
-            data["clips_metadata"]["content_appreciation_info"] = {}
-        original_sound_info = data["clips_metadata"].get("original_sound_info")
-        if original_sound_info is None: #
-            data["clips_metadata"]["original_sound_info"] = {}
+    if "clips_metadata" not in data or not data["clips_metadata"]:
+        data["clips_metadata"] = {}
+
+    cm = data["clips_metadata"]
+
+    cm.setdefault("clips_creation_entry_point", "clips")
+    cm.setdefault("featured_label", None)
+    cm.setdefault("is_public_chat_welcome_video", False)
+    cm.setdefault("professional_clips_upsell_type", 0)
+    cm.setdefault("show_tips", None)
+    cm.setdefault("achievements_info", {})  # если нужен объект, можно создать пустой экземпляр ClipsAchievementsInfo()
+    cm.setdefault("additional_audio_info", {})
+    cm.setdefault("asset_recommendation_info", None)
+    cm.setdefault("audio_ranking_info", {})
+    cm.setdefault("audio_type", "original_sounds")
+    cm.setdefault("branded_content_tag_info", {})
+    cm.setdefault("breaking_content_info", None)
+    cm.setdefault("breaking_creator_info", None)
+    cm.setdefault("challenge_info", None)
+    cm.setdefault("content_appreciation_info", {})
+    cm.setdefault("contextual_highlight_info", None)
+    cm.setdefault("cutout_sticker_info", [])
+    cm.setdefault("disable_use_in_clips_client_cache", False)
+    cm.setdefault("external_media_info", None)
+    cm.setdefault("is_fan_club_promo_video", False)
+    cm.setdefault("is_shared_to_fb", False)
+    cm.setdefault("mashup_info", {})
+    cm.setdefault("merchandising_pill_info", None)
+    cm.setdefault("music_canonical_id", "")
+    cm.setdefault("music_info", None)
+    cm.setdefault("nux_info", None)
+    cm.setdefault("original_sound_info", None)
+    cm.setdefault("originality_info", None)
+    cm.setdefault("reels_on_the_rise_info", None)
+    cm.setdefault("reusable_text_attribute_string", None)
+    cm.setdefault("reusable_text_info", None)
+    cm.setdefault("shopping_info", None)
+    cm.setdefault("show_achievements", False)
+    cm.setdefault("template_info", None)
+    cm.setdefault("may_have_template_info", None)
+    cm.setdefault("viewer_interaction_settings", None)
 
     media = deepcopy(data)
     if "video_versions" in media:
